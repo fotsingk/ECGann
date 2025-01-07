@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf8'?>
+<nuitka-compilation-report nuitka_version="2.4.8" nuitka_commercial_version="not installed" completion="error exit message (1)" exit_message="Failed unexpectedly in Scons C backend compilation.">
+  <scons_error_reports>
+    <scons_error_report>
+      <command>"C:\Users\BEN_FO~1\AppData\Local\Nuitka\Nuitka\Cache\DOWNLO~1\gcc\x86_64\13.2.0-16.0.6-11.0.1-msvcrt-r1\mingw64\bin\gcc.exe" -o "C:\Users\BEN_FO~1\DOCUME~1\ECGann\ecgann.exe" -flto=12 -fuse-linker-plugin -fpartial-inlining -freorder-functions -Wl,--exclude-all-symbols -Wl,--out-implib,.\import.lib -municode -O3 -s -Wl,--enable-auto-import -static-libgcc -Wl,--stack,9863168 @".\@link_input.txt" -LE:\MesLogiciels\myPython\libs -lm -lpython310</command>
+      <stderr>
+C:/Users/Ben_Fotsing/AppData/Local/Nuitka/Nuitka/Cache/downloads/gcc/x86_64/13.2.0-16.0.6-11.0.1-msvcrt-r1/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/13.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: error: lto-wrapper failed
+</stderr>
+    </scons_error_report>
+  </scons_error_reports>
+  <module name="__main__" kind="PythonMainModule" usage="root_module" reason="Root module" source_path="${cwd}\ecgann.py">
+    <optimization-time pass="1" time="0.28" micro_passes="5" max_branch_merge="110" merged_total="3002" />
+    <optimization-time pass="2" time="0.03" micro_passes="1" max_branch_merge="93" merged_total="463" />
+    <module_usages>
+      <module_usage name="site" finding="excluded" line="1" exclusion_reason="Not following into stdlib unless standalone or requested to follow into stdlib." />
+      <module_usage name="PySide6.QtWidgets" finding="excluded" line="4" exclusion_reason="Extension modules cannot be inspected." />
+      <module_usage name="PySide6.QtGui" finding="excluded" line="5" exclusion_reason="Extension modules cannot be inspected." />
+      <module_usage name="pandas" finding="absolute" line="6" />
+      <module_usage name="os" finding="excluded" line="7" exclusion_reason="Not following into stdlib unless standalone or requested to follow into stdlib." />
+      <module_usage name="ui_form" finding="absolute" line="15" />
+      <module_usage name="ui_dialog" finding="absolute" line="16" />
+      <module_usage name="matplotlib" finding="absolute" line="17" />
+      <module_usage name="matplotlib.backends.backend_qtagg" finding="absolute" line="18" />
+      <module_usage name="matplotlib.figure" finding="absolute" line="19" />
+      <module_usage name="ntpath" finding="excluded" line="23" exclusion_reason="Not following into stdlib unless standalone or requested to follow into stdlib." />
+      <module_usage name="ntpath" finding="excluded" line="24" exclusion_reason="Not following into stdlib unless standalone or requested to follow into stdlib." />
+      <module_usage name="ntpath" finding="excluded" line="50" exclusion_reason="Not following into stdlib unless standalone or requested to follow into stdlib." />
+    </module_usages>
+  </module>
+  <performance>
+    <memory_usage name="after_launch" value="44253184" />
+    <memory_usage name="before_c_code_generation" value="45752320" />
+    <memory_usage name="before_running_scons" value="45510656" />
+  </performance>
+  <data_composer blob_size="5709" total="342">
+    <module_data filename="__bytecode.const" input_size="0" blob_name=".bytecode" blob_size="3" />
+    <module_data filename="__constants.const" input_size="2114" blob_name="" blob_size="868" />
+    <module_data filename="module.__main__.const" input_size="7749" blob_name="__main__" blob_size="4798" />
+  </data_composer>
+  <command_line>
+    <option value="ecgann.py" />
+  </command_line>
+  <plugins>
+    <plugin name="anti-bloat" user_enabled="no" />
+    <plugin name="eventlet" user_enabled="no" />
+    <plugin name="gi" user_enabled="no" />
+    <plugin name="implicit-imports" user_enabled="no" />
+    <plugin name="multiprocessing" user_enabled="no" />
+    <plugin name="options-nanny" user_enabled="no" />
+    <plugin name="pkg-resources" user_enabled="no" />
+    <plugin name="transformers" user_enabled="no" />
+  </plugins>
+  <distributions />
+  <python python_exe="${sys.prefix}\python.exe" python_flavor="Anaconda Python" python_version="3.10.16" os_name="Windows" os_release="11" arch_name="x86_64" filesystem_encoding="utf-8">
+    <search_path>
+      <path value="${cwd}" />
+      <path value="${sys.prefix}\DLLs" />
+      <path value="${sys.prefix}\lib" />
+      <path value="${sys.prefix}" />
+      <path value="${sys.prefix}\lib\site-packages" />
+      <path value="${sys.prefix}\lib\site-packages\setuptools\_vendor" />
+    </search_path>
+  </python>
+  <output run_filename="${cwd}\ecgann.cmd" />
+</nuitka-compilation-report>
