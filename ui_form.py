@@ -256,7 +256,7 @@ QPushButton {border-color: rgb(0, 0, 0);
 
     def retranslateUi(self, ECGann):
         ECGann.setWindowTitle(QCoreApplication.translate("ECGann", u"ECGann", None))
-        self.dataGroup.setTitle(QCoreApplication.translate("ECGann", u"Load Databases", None))
+        self.dataGroup.setTitle(QCoreApplication.translate("ECGann", u"Load Database", None))
         self.loadButton.setText(QCoreApplication.translate("ECGann", u"Load", None))
         self.continuButton.setText(QCoreApplication.translate("ECGann", u"Continue", None))
         self.modeGroupBox.setTitle(QCoreApplication.translate("ECGann", u"Mode", None))
@@ -264,7 +264,7 @@ QPushButton {border-color: rgb(0, 0, 0);
         self.labRadioButton.setText(QCoreApplication.translate("ECGann", u"Labelization", None))
         self.saveGroupBox.setTitle(QCoreApplication.translate("ECGann", u"Save", None))
         self.checkButton.setText(QCoreApplication.translate("ECGann", u"Info", None))
-        self.saveButton.setText(QCoreApplication.translate("ECGann", u"Save & Exit", None))
+        self.saveButton.setText(QCoreApplication.translate("ECGann", u"Save", None))
         self.plotControlGroup.setTitle(QCoreApplication.translate("ECGann", u"plot control", None))
         self.prevButton.setText(QCoreApplication.translate("ECGann", u"<< Previous", None))
         self.sigNumber.setText(QCoreApplication.translate("ECGann", u"plot number xxxx", None))

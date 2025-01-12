@@ -3,6 +3,7 @@
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox, QWidget
 from PySide6.QtGui import QIcon
+import numpy as np
 import pandas as pd
 import os
 
@@ -44,6 +45,7 @@ class ECGann(QMainWindow):
         self.fileName = ""
         self.annCountForBck = 0
         self.isSavedWork = False
+        self.isModified = False
 
         # --------- The GUI ---------
         self.ui = Ui_ECGann()
@@ -60,7 +62,7 @@ class ECGann(QMainWindow):
         # ---- Button interraction ------- #
         # Load Button and continue button
         self.ui.loadButton.clicked.connect(self.test_load_data)
-        self.ui.continuButton.clicked.connect(self.continu_annotation)
+        self.ui.continuButton.clicked.connect(self.test_continue_annotation)
         # save and exit Button
         self.ui.saveButton.clicked.connect(self.save_data)
         #check button
@@ -107,19 +109,28 @@ class ECGann(QMainWindow):
             self.load_data()
         else:
             self.get_labelization_info()
-            if (self.remainToLabel == self.numberOfSignals) | (self.remainToLabel == 0) | (self.isSavedWork==True):
-                self.load_data()
-            else:
+            if (self.isModified==True) & (self.isSavedWork==False):
                 dlog = Ui_Dialog(self)
                 if dlog.exec():
                     self.load_data()
                 else:
                     pass
+            else:
+                self.load_data()
+
+            # if (self.remainToLabel == self.numberOfSignals) | (self.remainToLabel == 0) | (self.isSavedWork==True):
+            #     self.load_data()
+            # else:
+            #     dlog = Ui_Dialog(self)
+            #     if dlog.exec():
+            #         self.load_data()
+            #     else:
+            #         pass
 
     def load_data(self):
         path = filedir
         fileNamePath, _ = QFileDialog.getOpenFileName(self,
-                        "Select Database File", path, "Text Files (*.txt *.csv)")
+                        "Select Database File", path, "Supported Files (*.txt *.csv *.npy);;Text Files (*.txt *.csv);; numpy Files (*.npy)")
         if fileNamePath:
             self.data = []
             self.signalNumber = 0       # actual signal plotted
@@ -128,13 +139,19 @@ class ECGann(QMainWindow):
             self.fileName = ""
             self.annCountForBck = 0
             self.isSavedWork = False
+            self.isModified = False
 
             self.ui.plotControlGroup.setEnabled(True)
             self.ui.labelGroupBox.setEnabled(False)
                         #raw_data = open(fileNamePath, mode='rb')
                         #self.data = loadtxt(raw_data, delimiter=',')
-            self.data = pd.read_csv(fileNamePath, header=None)
-            self.data = self.data.values
+            # loading the dataset
+            if fileNamePath[-3:] == "npy":
+                self.data = np.load(fileNamePath)
+            else:
+                self.data = pd.read_csv(fileNamePath, header=None)
+                self.data = self.data.values
+
             self.numberOfSignals = self.data.shape[1]
                         # initialize variable for annotation
             fileName = fileNamePath[fileNamePath.rfind('/')+1 : -4] #♥recupère le nom du fichier
@@ -146,6 +163,7 @@ class ECGann(QMainWindow):
             self.sigAnnMat["label"] = self.sigAnnMat["label"].astype(str)
                         #print(self.sigAnnMat)
             self.update_plot()
+            self.ui.exploRadioButton.setChecked(True)
             self.explo_or_lab_mode(self.ui.exploRadioButton.isChecked())
 
     def test_continue_annotation(self):
@@ -153,31 +171,47 @@ class ECGann(QMainWindow):
             self.continu_annotation()
         else:
             self.get_labelization_info()
-            if (self.remainToLabel == self.numberOfSignals) | (self.remainToLabel == 0) | (self.isSavedWork==True):
-                self.continu_annotation()
-            else:
+            if (self.isModified==True) & (self.isSavedWork==False):
                 dlog = Ui_Dialog(self)
                 if dlog.exec():
                     self.continu_annotation()
                 else:
                     pass
+            else:
+                self.continu_annotation()
+
+            # self.get_labelization_info()
+            # if (self.remainToLabel == self.numberOfSignals) | (self.remainToLabel == 0) | (self.isSavedWork==True):
+            #     self.continu_annotation()
+            # else:
+            #     dlog = Ui_Dialog(self)
+            #     if dlog.exec():
+            #         self.continu_annotation()
+            #     else:
+            #         pass
     
     def continu_annotation(self):
         path = backdir
         infoFileNamePath, _ = QFileDialog.getOpenFileName(self,
             "Select File to continue your work", path, "Text Files (*.dat)")
         if infoFileNamePath != "":
+            self.isModified = False
+            self.isSavedWork = False
             # load information
             self.infoFile = pd.read_csv(infoFileNamePath)
             fileNamePath = self.infoFile["fileNamePath"].values
             fileNamePath = fileNamePath[0]
-            #print(fileNamePath)
-            self.data = pd.read_csv(fileNamePath, header=None)
-            self.data = self.data.values
+            # loading the dataset
+            if fileNamePath[-3:] == "npy":
+                self.data = np.load(fileNamePath)
+            else:
+                self.data = pd.read_csv(fileNamePath, header=None)
+                self.data = self.data.values
+
             self.numberOfSignals = self.data.shape[1]
             self.remainToLabel = self.infoFile.remainToLabel[0]
             self.nextSigAnn = self.infoFile['nextSigAnn'][0]
-            print(self.nextSigAnn)
+            #print(self.nextSigAnn)
             # initialize variable for annotation
             fileName = fileNamePath[fileNamePath.rfind('/')+1 : -4]
             self.fileNamePath = fileNamePath
@@ -226,7 +260,7 @@ class ECGann(QMainWindow):
             if  self.remainToLabel<=10 & self.remainToLabel>0:
                 self.messageDialog(f'''Just Complete The labelization
                 its remain only {self.remainToLabel} signal(s)''')
-            elif self.remainToLabel == self.numberOfSignals:
+            elif (self.remainToLabel == self.numberOfSignals):
                 self.messageDialog(f'''Nothing to save
                 None signal have been labelled''')
             else:
@@ -245,6 +279,7 @@ class ECGann(QMainWindow):
             #self.close()
             self.messageDialog("The work has been saved")
             self.isSavedWork=True
+            self.isModified = False
         else:
             self.messageDialog("The work is unsaved")
 
@@ -329,6 +364,7 @@ class ECGann(QMainWindow):
     # Annotation function
     def annot_as_good(self):
         self.sigAnnMat.iloc[self.signalNumber] = 'good'
+        self.isModified = True
         self.nextSigAnn += 1
         self.annCountForBck += 1
         #print(self.annCountForBck)
@@ -340,6 +376,7 @@ class ECGann(QMainWindow):
 
     def annot_as_bad(self):
         self.sigAnnMat.iloc[self.signalNumber] = 'bad'
+        self.isModified = True
         self.nextSigAnn += 1
         self.annCountForBck += 1
         #print(self.annCountForBck)
@@ -351,6 +388,7 @@ class ECGann(QMainWindow):
 
     def annot_as_unknown(self):
         self.sigAnnMat.iloc[self.signalNumber] = 'unknown'
+        self.isModified = True
         self.nextSigAnn += 1
         self.annCountForBck += 1
         #print(self.annCountForBck)
