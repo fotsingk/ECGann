@@ -216,7 +216,7 @@ class ECGann(QMainWindow):
             fileName = fileNamePath[fileNamePath.rfind('/')+1 : -4]
             self.fileNamePath = fileNamePath
             self.fileName = fileName
-            self.annotationFileName = "annotation_"+fileName+".txt"
+            self.annotationFileName = fileName+"_annotation.txt"
 
             self.sigAnnMat = pd.read_csv(self.infoFile.sigAnnMat[0], index_col=0)
             #print(self.sigAnnMat)
@@ -242,8 +242,9 @@ class ECGann(QMainWindow):
                 remain to label : {self.remainToLabel}
                 *--------------------------------------*
                 ''')
+                self.nextSigAnn = self.nextSigAnn
                 self.ui.labRadioButton.setChecked(True)
-            self.signalNumber = self.nextSigAnn
+            self.signalNumber = self.nextSigAnn 
             self.explo_or_lab_mode(self.ui.exploRadioButton.isChecked())
             self.update_plot()
 
@@ -319,6 +320,7 @@ class ECGann(QMainWindow):
         'fileNamePath': self.fileNamePath,
         'status':self.labelizationStatus,
         'remainToLabel': self.remainToLabel,
+        'actualSignal':self.signalNumber,
         'nextSigAnn': self.nextSigAnn}
 
 
@@ -359,6 +361,8 @@ class ECGann(QMainWindow):
         else:
             self.signalNumber -= 1
             self.update_plot()
+        if self.ui.labRadioButton.isChecked():
+            self.nextSigAnn -= 1
 
 
     # Annotation function
